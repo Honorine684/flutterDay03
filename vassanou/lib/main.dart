@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:vassanou/Authentification/Signup.dart';
 
 void main() {
-  runApp(MaterialApp(home: AjoutProduit()));
+  runApp(MaterialApp(
+    home: Signup(),
+    theme: ThemeData(
+      scaffoldBackgroundColor: Colors.white,
+      primaryColor: Colors.teal.shade700,
+      primarySwatch: Colors.teal,
+    ),
+  ));
 }
 
 class AjoutProduit extends StatefulWidget {
@@ -18,6 +26,7 @@ class AjoutProduitState extends State<AjoutProduit> {
   final nom = TextEditingController();
   final description = TextEditingController();
   final quantite = TextEditingController();
+  final prix = TextEditingController();
   // Liste des produits prédéfinis
   final List<Map<String, String>> predefinedProducts = [
     {"nom": 'Produit', "image": "assets/images/aj3.jpg"},
@@ -57,6 +66,60 @@ class AjoutProduitState extends State<AjoutProduit> {
     'Tonne'
   ];
   String selectedUnit = 'Unité de mesure';
+  void showAlertProductAdd() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+        
+          actions: [
+            
+            Image.asset(
+              "assets/images/login.png",
+              height: 200,
+              fit: BoxFit.cover,
+            ),
+            Text(
+              "Produit ajouté avec succès",
+              style: TextStyle(color: Colors.teal.shade700),
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  void showAlertDialogConfirmProduit() {
+    // Afficher une boîte de dialogue de confirmation
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Confirmation"),
+          content: Text("Êtes-vous sûr de vouloir ajouter ce produit ?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Ferme la boîte de dialogue
+              },
+              child: Text("Annuler"),
+            ),
+            TextButton(
+              onPressed: () {
+                // Logique d'enregistrement du produit ici
+                Navigator.of(context).pop();
+
+                //seconde boîte de dialogue pour confirmer l'ajout
+                showAlertProductAdd();
+              },
+              child: Text("Confirmer"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final largeurEcran = MediaQuery.of(context).size.width;
@@ -311,7 +374,7 @@ class AjoutProduitState extends State<AjoutProduit> {
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 12),
                   child: TextFormField(
-                    controller: quantite,
+                    controller: prix,
                     keyboardType: TextInputType.number,
                     // pour verifier si le champ est bien rempli
                     validator: (value) {
@@ -445,61 +508,31 @@ class AjoutProduitState extends State<AjoutProduit> {
                 ),
                 const SizedBox(height: 20),
 
-               SizedBox(
-  width: largeurEcran * 0.88,
-  height: 50,
-  child: ElevatedButton(
-    onPressed: () {
-      if (formKey.currentState!.validate()) {
-        // Afficher une boîte de dialogue de confirmation
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text("Confirmation"),
-              content: Text("Êtes-vous sûr de vouloir ajouter ce produit ?"),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(); // Ferme la boîte de dialogue
-                  },
-                  child: Text("Annuler"),
+                SizedBox(
+                  width: largeurEcran * 0.88,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      showAlertDialogConfirmProduit();
+                      if (formKey.currentState!.validate()) {}
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).primaryColor,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 2,
+                    ),
+                    child: Text(
+                      "Ajouter le produit",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ),
-                TextButton(
-                  onPressed: () {
-                    // Logique d'enregistrement du produit ici
-                    Navigator.of(context).pop(); // Ferme la boîte de dialogue
-                    
-                    // Vous pouvez ajouter une seconde boîte de dialogue pour confirmer l'ajout
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Produit ajouté avec succès !"))
-                    );
-                  },
-                  child: Text("Confirmer"),
-                ),
-              ],
-            );
-          },
-        );
-      }
-    },
-    style: ElevatedButton.styleFrom(
-      backgroundColor: Theme.of(context).primaryColor,
-      foregroundColor: Colors.white, // Assurez-vous que le texte est visible
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      elevation: 2,
-    ),
-    child: Text(
-      "Ajouter le produit",
-      style: TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-  ),
-),
                 const SizedBox(height: 30),
               ],
             ),
