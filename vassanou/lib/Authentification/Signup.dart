@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vassanou/Authentification/Login.dart';
-import 'package:vassanou/Pages/Home.dart';
+import 'package:vassanou/Component/Bottombar.dart';
+
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -68,7 +69,9 @@ class SignupState extends State<Signup> {
     final largeurEcran = MediaQuery.of(context).size.width;
     final hauteurEcran = MediaQuery.of(context).size.height;
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
+        
         backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
@@ -338,7 +341,7 @@ class SignupState extends State<Signup> {
                           //methode d'inscription
                           //signup();
                           // naviguer vers la page de home
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> const Home()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> const AnimatedBarExample()));
                         }
                       },
                     ),

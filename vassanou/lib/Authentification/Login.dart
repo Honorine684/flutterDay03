@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vassanou/Pages/Home.dart';
-import 'package:vassanou/main.dart';
+import 'package:vassanou/Component/Bottombar.dart';
+import 'package:vassanou/Pages/AjoutProduit.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -274,7 +274,7 @@ class LoginState extends State<Login> {
                       child: Text("Réinitialiser",style: TextStyle(color: Colors.teal.shade700),),
                       onPressed: () => setState(() {
                         // naviguer vers la page de connexion
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> const Home()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> const AnimatedBarExample()));
                       }),
                     )
                   ],
