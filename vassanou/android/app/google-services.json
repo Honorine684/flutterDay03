@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "535413410532",
+    "project_id": "dclicmarket-763f5",
+    "storage_bucket": "dclicmarket-763f5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:535413410532:android:e09f4391c8e46acdd5faf1",
+        "android_client_info": {
+          "package_name": "com.example.vassanou"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlIgOCO_LX-CbVORsdolJkYXnAAO0Q2-M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

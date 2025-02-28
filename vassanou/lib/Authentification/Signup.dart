@@ -71,7 +71,7 @@ class SignupState extends State<Signup> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(

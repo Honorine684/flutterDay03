@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:vassanou/Services/firebase/Auth.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -12,10 +14,12 @@ class Profile extends StatefulWidget {
 class ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
+    final User? user = Auth().currentUser;
     final largeurEcran = MediaQuery.of(context).size.width;
     //final hauteurEcran = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         actions: [Icon(Icons.settings)],
       ),
@@ -64,7 +68,7 @@ class ProfileState extends State<Profile> {
                       height: 10,
                     ),
                     Text(
-                      "0165435050",
+                      user?.email ?? "User email",
                       style: TextStyle(fontSize: 13),
                     ),
                     SizedBox(
@@ -120,13 +124,17 @@ class ProfileState extends State<Profile> {
             SizedBox(height: 10,),
             Row(
               children: [
-                Icon(Icons.logout,color: Color(0xffE9494F),),
+                IconButton(
+                  onPressed: ()=>
+                  Auth().logout(), 
+                  icon: Icon(Icons.logout,color: Color(0xffE9494F),),),
+                
                 Text(
                   "Déconnexion",
                   style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),
                   
                 ),
-                SizedBox(width: 130,),
+                SizedBox(width: 110,),
                 IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back_ios_new_rounded))
               ],
             ),

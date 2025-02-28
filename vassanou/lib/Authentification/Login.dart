@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:vassanou/Authentification/Signup.dart';
 import 'package:vassanou/Component/Bottombar.dart';
 import 'package:vassanou/Pages/AjoutProduit.dart';
+import 'package:vassanou/Services/firebase/Auth.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -18,6 +21,7 @@ class LoginState extends State<Login> {
   bool isRememberMeChecked = false;
   final formKey = GlobalKey<FormState>();
   bool isPhoneNumber = false;
+  bool isLoading = false;
 
   // verification si c'est un numero ou pas
   void checkUserEntry(String value) {
@@ -66,7 +70,9 @@ class LoginState extends State<Login> {
     final largeurEcran = MediaQuery.of(context).size.width;
     final hauteurEcran = MediaQuery.of(context).size.height;
     return Scaffold(
+      
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
@@ -86,7 +92,7 @@ class LoginState extends State<Login> {
                     Image.asset(
                       "assets/images/login.png",
                       width: largeurEcran * 0.4,
-                      height: hauteurEcran * 0.4,
+                      height: hauteurEcran * 0.3,
                     )
                   ],
                 ),
@@ -251,20 +257,58 @@ class LoginState extends State<Login> {
                   color: Colors.teal.shade700,
                 ),
                 child: TextButton(
-                  onPressed: () {
+                  onPressed:isLoading ?null: () async {
+                    setState(() {
+                      isLoading = true;
+                    });
                     if (formKey.currentState!.validate()) {
                       // Logique de connexion
+                      try{
+                        await Auth().loginWithEmailAndPassword(
+                          emailOrPhone.text,password.text
+                        );
+                        setState(() {
+                      isLoading = false;
+                    });
+                      }on FirebaseAuthException catch(e){
+                        setState(() {
+                      isLoading = false;
+                    });
+                        // message d'erreur
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("${e.message}"),
+                          behavior: SnackBarBehavior.floating,
+                          backgroundColor: Color(0xffE9494F),
+                          showCloseIcon: true,
+                          ),
+                          
+                        );
+                      }
                       // naviguer vers la page de connexion
                         Navigator.push(context, MaterialPageRoute(builder: (context)=> const AjoutProduit()));
                     }
                   },
-                  child: Text(
+                  child: isLoading ? const CircularProgressIndicator():
+                  Text(
                     "Se connecter",
                     style: TextStyle(
                         fontSize: largeurEcran * 0.04, color: Colors.white),
                   ),
                 ),
               ),
+               Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Pas utilisateur?"),
+                    TextButton(
+                      child: Text("S'inscrire",style: TextStyle(color: Colors.teal.shade700),),
+                      onPressed: () => setState(() {
+                        // naviguer vers la page d'inscription
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> const Signup()));
+                      }),
+                    )
+                  ],
+                ),
               // mot de passe oublié
               Row(
                   mainAxisAlignment: MainAxisAlignment.center,

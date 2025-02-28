@@ -114,22 +114,15 @@ class AjoutProduitState extends State<AjoutProduit> {
     final hauteurEcran = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
+        //automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         elevation: 10,
-        title: Row(
-          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Icon(Icons.arrow_back),
-            SizedBox(
-              height: 20,
-              width: 60,
-            ),
+        title: 
             Text(
               "Ajouter un produit",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             )
-          ],
-        ),
+    
       ),
       body: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 20),
