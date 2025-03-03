@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vassanou/Authentification/Login.dart';
-import 'package:vassanou/Pages/Home.dart';
+import 'package:vassanou/Component/Bottombar.dart';
 import 'package:vassanou/Services/firebase/Auth.dart';
 
 class Redirectionpage extends StatefulWidget {
@@ -13,6 +13,7 @@ class Redirectionpage extends StatefulWidget {
 
 }
 class RedirectionpageState extends State<Redirectionpage>{
+ 
   @override
   Widget build(BuildContext context) {
    return StreamBuilder(
@@ -21,7 +22,7 @@ class RedirectionpageState extends State<Redirectionpage>{
       if(snapshot.connectionState == ConnectionState.waiting){
         return const CircularProgressIndicator();
       }else if(snapshot.hasData){
-        return const Home();
+        return const AnimatedBarExample();
       }else{
         return const Login();
       }

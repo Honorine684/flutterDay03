@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:vassanou/JsonModel/CategorieProduit.dart';
+import 'package:vassanou/Services/firebase/FirestoreServices.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -93,6 +95,55 @@ class HomeSate extends State<Home> {
     searchController.dispose();
     super.dispose();
   }
+ @override
+  void initState() {
+    super.initState();
+    loadCategories(); 
+  }
+  List<Categorieproduit> categorieproduit = [];
+  Categorieproduit? selectedProduit;
+  void loadCategories() {
+    print("Démarrage du chargement des catégories...");
+    Firestoreservices().getCategorieProduit().listen((snapshot) {
+      print("Données reçues: ${snapshot.docs.length} documents");
+      List<Categorieproduit> categories = [];
+
+      for (var doc in snapshot.docs) {
+        try {
+
+          
+          String categoryId = doc.id;
+          String libelle = doc.get('libcat'); 
+          String description = doc.get('description');
+          String photo = doc.get('photo');
+
+
+          print("Catégorie trouvée: $libelle (ID: $categoryId)");
+          categories
+              .add(Categorieproduit(
+              id: categoryId, 
+              libelle: libelle,
+              description: description,
+              photo: photo,
+              ));
+        } catch (e) {
+          print("Erreur sur un document: $e");
+        }
+      }
+
+      setState(() {
+        categorieproduit = categories;
+        print("Catégories chargées: ${categories.length}");
+        if (categories.isNotEmpty && selectedProduit == null) {
+          selectedProduit = categories[0];
+          print("Catégorie par défaut: ${selectedProduit?.libelle}");
+        }
+      });
+    }, onError: (error) {
+      print("Erreur lors du chargement des catégories: $error");
+    });
+  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -259,11 +310,12 @@ class HomeSate extends State<Home> {
                 height: 100,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: categories.length,
+                  itemCount: categorieproduit.length,
                   itemBuilder: (context, index) => GestureDetector(
                     onTap: () {
                       setState(() {
                         indexSelectionne = index;
+                        selectedProduit = categorieproduit[index];
                       });
                     },
                     child: Container(
@@ -291,7 +343,8 @@ class HomeSate extends State<Home> {
                                   width: 8,
                                 ),
                                 Text(
-                                  categories[index]["texte"]!,
+                                categorieproduit[index].libelle,
+                                  
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold,
@@ -308,13 +361,14 @@ class HomeSate extends State<Home> {
                                   width: 8,
                                 ),
                                 Text(
-                                  categories[index]["nom"]!,
+                                  categorieproduit[index].description,
                                   style: TextStyle(
                                     fontSize: 13,
                                     color: indexSelectionne == index
                                         ? Colors.white
                                         : Colors.black,
                                   ),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ],
                             ),
@@ -325,7 +379,7 @@ class HomeSate extends State<Home> {
                                   width: 100,
                                 ),
                                 Image.asset(
-                                  categories[index]["image"]!,
+                                  "assets/images/${categorieproduit[index].photo}",
                                   height: 30,
                                   width: 30,
                                 ),
@@ -363,28 +417,14 @@ class HomeSate extends State<Home> {
                 ),
                 itemCount: products.length,
                 itemBuilder: (context, index) => Container(
-                 /* width: largeurEcran * 0.4,
-                  height: hauteurEcran * 0.7,*/
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       color: Color(0xFFf5f5f5)),
                   child: Column(
-                      //crossAxisAlignment: CrossAxisAlignment.start, 
-                     // mainAxisSize: MainAxisSize.min, 
                     children: [
                       Row(
                         children: [
-                          /*SizedBox(
-                            height: 10,
-                            width: 8,
-                          ),*/
-                          /*IconButton(
-                            onPressed: (){}, 
-                            icon:  Icon(
-                            Icons.edit,
-                            color: Color(0xFFEBB65B),
-                          ),
-                            ),*/
+
                          
                           Text(
                             "Modifier",
@@ -434,19 +474,15 @@ class HomeSate extends State<Home> {
                           
                         ],
                       ),
-                      SizedBox(height: 20,width: 20,),
+                      SizedBox(height: 15),
                       Row(
-                        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              //SizedBox(width: 80,),
-                              /*IconButton(
+                              SizedBox(width: 40,),
+                              IconButton(
                                 onPressed: (){
-
                                 }, 
                                 icon: Icon(Icons.delete, color: Color(0xFFE9494F)),
-                                ),*/
-                              
-                              
+                                ),
                               Text("Supprimer",
                                   style: TextStyle(
                                       fontSize: 10, color: Color(0xFFE9494F))),

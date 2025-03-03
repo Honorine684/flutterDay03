@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:vassanou/Authentification/Login.dart';
 import 'package:vassanou/Services/firebase/Auth.dart';
 
 class Profile extends StatefulWidget {
@@ -12,11 +14,51 @@ class Profile extends StatefulWidget {
 }
 
 class ProfileState extends State<Profile> {
+// Variables pour stocker les données utilisateur
+  String name = "";
+  String pseudo = "";
+  String email = "";
+
+  // Récupérer les informations de l'utilisateur depuis Firestore
+  Future<void> getUserData() async {
+    try {
+      final User? currentUser = Auth().currentUser;
+      if (currentUser != null) {
+        // Récupérer les données utilisateur de Firestore
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(currentUser.uid)
+            .get();
+
+        if (userDoc.exists) {
+          setState(() {
+            name = userDoc.get('name') ?? '';
+            pseudo = userDoc.get('pseudo') ?? '';
+            email = currentUser.email ?? '';
+          });
+        }
+      }
+    } catch (e) {
+      print("Erreur lors de la récupération des données utilisateur: $e");
+    }
+  }
+  // recupere la premiere lettre de son nom 
+ String getFirstLetter(String name) {
+    return name.isNotEmpty ? name[0] : ''; // Retourne la première lettre
+  }
+
+
+
+@override
+  void initState() {
+    getUserData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final User? user = Auth().currentUser;
     final largeurEcran = MediaQuery.of(context).size.width;
-    //final hauteurEcran = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -42,16 +84,22 @@ class ProfileState extends State<Profile> {
               height: 20,
             ),
             Row(
-              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Container(
                   width: 120,
                   height: 120,
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: AssetImage("assets/images/login.png"),
-                          fit: BoxFit.cover)),
+                      color: Colors.blue.shade100
+                      ),
+                  child: Center(
+                    child: Text(
+                      getFirstLetter(name), 
+                      style: TextStyle(
+                        fontSize: 60, 
+                        fontWeight: FontWeight.bold, 
+                        color: Colors.white, 
+                      ),  ))  
                 ),
                 SizedBox(
                   width: 60,
@@ -60,7 +108,7 @@ class ProfileState extends State<Profile> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Text(
-                      "Maman yabo",
+                      pseudo,
                       style:
                           TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                     ),
@@ -93,53 +141,80 @@ class ProfileState extends State<Profile> {
                 )
               ],
             ),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             Row(
               children: [
-                Icon(Icons.sell,color: Color(0xffE9494F),),
+                Icon(
+                  Icons.sell,
+                  color: Color(0xffE9494F),
+                ),
                 Text(
                   "Vendu",
-                  style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),
-                  
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(width: 190,),
-                IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back_ios_new_rounded))
+                SizedBox(
+                  width: 190,
+                ),
+                IconButton(onPressed: () {}, icon: Icon(Icons.chevron_right))
               ],
             ),
             Divider(thickness: 2, color: Colors.grey.withOpacity(0.5)),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             Row(
               children: [
-                Icon(Icons.task_alt,color: Color(0xffE9494F),),
+                Icon(
+                  Icons.task_alt,
+                  color: Color(0xffE9494F),
+                ),
                 Text(
                   "Parler au chef",
-                  style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),
-                  
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(width: 130,),
-                IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back_ios_new_rounded))
+                SizedBox(
+                  width: 130,
+                ),
+                IconButton(onPressed: () {}, icon: Icon(Icons.chevron_right))
               ],
             ),
             Divider(thickness: 2, color: Colors.grey.withOpacity(0.5)),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             Row(
               children: [
                 IconButton(
-                  onPressed: ()=>
-                  Auth().logout(), 
-                  icon: Icon(Icons.logout,color: Color(0xffE9494F),),),
-                
+                  onPressed: () {
+                    Auth().logout();
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => const Login()),
+                      (route) => false,
+                    ); // supprime les routes precedentes
+                  },
+                  icon: Icon(
+                    Icons.logout,
+                    color: Color(0xffE9494F),
+                  ),
+                ),
                 Text(
                   "Déconnexion",
-                  style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),
-                  
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(width: 110,),
-                IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back_ios_new_rounded))
+                SizedBox(
+                  width: 110,
+                ),
+                IconButton(onPressed: () {}, icon: Icon(Icons.chevron_right))
               ],
             ),
             Divider(thickness: 2, color: Colors.grey.withOpacity(0.5)),
-            Image.asset("assets/images/user.jpg",width: largeurEcran*0.7,height: 200,)
+            Image.asset(
+              "assets/images/user.jpg",
+              width: largeurEcran * 0.7,
+              height: 200,
+            )
           ],
         ),
       ),

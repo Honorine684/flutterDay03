@@ -9,12 +9,16 @@ Future<void> main() async{
   options: DefaultFirebaseOptions.currentPlatform
   );
   runApp(MaterialApp(
-    home: Redirectionpage(),
+   home: Redirectionpage(),
+   //home: Ajoutcategorie(),
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
       scaffoldBackgroundColor: Colors.white,
       primaryColor: Colors.teal.shade700,
       primarySwatch: Colors.teal,
+      colorScheme: ColorScheme.light(
+     primary: Colors.teal.shade700, 
+    ),
       
     ),
   ));

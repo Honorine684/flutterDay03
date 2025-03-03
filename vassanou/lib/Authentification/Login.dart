@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:vassanou/Authentification/Signup.dart';
+
+
 import 'package:vassanou/Component/Bottombar.dart';
-import 'package:vassanou/Pages/AjoutProduit.dart';
+
 import 'package:vassanou/Services/firebase/Auth.dart';
 
 class Login extends StatefulWidget {
@@ -267,6 +269,7 @@ class LoginState extends State<Login> {
                         await Auth().loginWithEmailAndPassword(
                           emailOrPhone.text,password.text
                         );
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const AnimatedBarExample()));
                         setState(() {
                       isLoading = false;
                     });
@@ -284,8 +287,8 @@ class LoginState extends State<Login> {
                           
                         );
                       }
-                      // naviguer vers la page de connexion
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> const AjoutProduit()));
+                      
+                        
                     }
                   },
                   child: isLoading ? const CircularProgressIndicator():

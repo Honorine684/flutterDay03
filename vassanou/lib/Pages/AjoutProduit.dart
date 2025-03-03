@@ -323,13 +323,7 @@ class AjoutProduitState extends State<AjoutProduit> {
                   child: TextFormField(
                     controller: quantite,
                     keyboardType: TextInputType.number,
-                    // pour verifier si le champ est bien rempli
-                    /*validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Vous devez entrez la quantité disponible";
-                      }
-                      return null;
-                    },*/
+               
                     decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.grey[50],
