@@ -1,20 +1,23 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:vassanou/JsonModel/CategorieProduit.dart';
+import 'package:vassanou/JsonModel/Produit.dart';
 import 'package:vassanou/JsonModel/UniteMesure.dart';
 import 'package:vassanou/Services/firebase/Auth.dart';
 import 'package:vassanou/Services/firebase/FirestoreServices.dart';
 
-class AjoutProduit extends StatefulWidget {
-  const AjoutProduit({super.key});
+class Editpage extends StatefulWidget {
+  final Produit produit;
+  const Editpage({super.key, required this.produit});
 
   @override
-  State<AjoutProduit> createState() {
-    return AjoutProduitState();
+  State<Editpage> createState() {
+    return EditpageState();
   }
 }
 
-class AjoutProduitState extends State<AjoutProduit> {
+class EditpageState extends State<Editpage> {
   final formKey = GlobalKey<FormState>();
   String? userCategorieCommerceId;
 
@@ -23,6 +26,10 @@ class AjoutProduitState extends State<AjoutProduit> {
   final description = TextEditingController();
   final quantite = TextEditingController();
   final prix = TextEditingController();
+  String? categorieProduitId;
+  String? categorieProduitLibelle;
+  String? uniteMesure;
+  String? idMesure;
   
 
   @override
@@ -151,82 +158,53 @@ class AjoutProduitState extends State<AjoutProduit> {
     });
   }
 
-  void showAlertProductAdd() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          actions: [
-            Image.asset(
-              "assets/images/login.png",
-              height: 200,
-              fit: BoxFit.cover,
-            ),
-            Text(
-              "Produit ajouté avec succès",
-              style: TextStyle(color: Colors.teal.shade700),
-            )
-          ],
-        );
-      },
-    );
+ // Récupère les données du produit depuis Firestore
+  Future<void> fetchProduitData() async {
+    DocumentSnapshot produitSnapshot = await FirebaseFirestore.instance
+        .collection('produits')
+        .doc(widget.produit.id)
+        .get();
+
+    if (produitSnapshot.exists) {
+      var produitData = produitSnapshot.data() as Map<String, dynamic>;
+
+      setState(() {
+        nom.text = produitData['nom'];
+        description.text = produitData['description'];
+        prix.text = produitData['prixUnitaire'].toString();
+        photo.text = produitData['photo'];
+        categorieProduitId = produitData['CategorieProduitId'];
+        categorieProduitLibelle = produitData['CategorieProduitLibelle'];
+        uniteMesure = produitData['uniteMesure'];
+        idMesure = produitData['idMesure'];
+      });
+    }
   }
 
-  void showAlertDialogConfirmProduit() {
-  final User? user = Auth().currentUser;
-  // Afficher une boîte de dialogue de confirmation
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text("Confirmation"),
-        content: Text("Êtes-vous sûr de vouloir ajouter ce produit ?"),
-        actions: [
-          
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(); 
-            },
-            child: Text("Non"),
-          ),
-          TextButton(
-            onPressed: () async {
-              // Logique d'enregistrement du produit ici
-              if (formKey.currentState!.validate()) {
-                try {
-                  double prixValue = double.parse(prix.text);
+ 
+  // Fonction de soumission du formulaire
+  void submitForm() {
+    if (formKey.currentState!.validate()) {
+      double newPrixUnitaire = double.parse(prix.text);
 
-                  await Firestoreservices().addProduit(
-                    selectedProduit!.id,
-                    selectedProduit!.libelle,
-                    nom.text,
-                    description.text,
-                    selectedUnit!.id,
-                    selectedUnit!.libelle,
-                    prixValue,
-                    photo.text,
-                    user!.uid,
-                  );
-
-                  Navigator.of(context).pop();
-                  showAlertProductAdd(); 
-                } catch (e) {
-                  print("Erreur lors de l'ajout du produit: $e");
-                }
-              }
-              nom.clear();
-              description.clear();
-              prix.clear();
-              photo.clear();
-
-            },
-            child: Text("Confirmer"),
-          ),
-        ],
+     Firestoreservices(). 
+     updateProduit(
+        widget.produit.id,
+        categorieProduitId!,
+        categorieProduitLibelle!,
+        nom.text,
+        description.text,
+        idMesure!,
+        uniteMesure!,
+        newPrixUnitaire,
+        photo.text,
       );
-    },
-  );
-}
+
+     
+      
+    }
+  }
+
 
 
   @override
@@ -238,7 +216,7 @@ class AjoutProduitState extends State<AjoutProduit> {
           backgroundColor: Colors.white,
           elevation: 10,
           title: Text(
-            "Ajouter un produit",
+            "Modifier un produit",
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           )),
       body: SingleChildScrollView(
@@ -600,7 +578,7 @@ class AjoutProduitState extends State<AjoutProduit> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-                      showAlertDialogConfirmProduit();
+                      submitForm();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).primaryColor,
@@ -611,7 +589,7 @@ class AjoutProduitState extends State<AjoutProduit> {
                       elevation: 2,
                     ),
                     child: Text(
-                      "Ajouter le produit",
+                      "Modifier le produit",
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,

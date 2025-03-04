@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
-import 'package:vassanou/Pages/AjoutCategorieProduit.dart';
+import 'package:vassanou/Pages/AjoutProduit.dart';
+import 'package:vassanou/Pages/Demandes.dart';
 
 import 'package:vassanou/Pages/Home.dart';
+import 'package:vassanou/Pages/PageCommande.dart';
 import 'package:vassanou/Pages/Profile.dart';
 
 class AnimatedBarExample extends StatefulWidget {
@@ -90,11 +92,11 @@ class _AnimatedBarExampleState extends State<AnimatedBarExample> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           setState(() {
-            Navigator.push(context, MaterialPageRoute(builder: (context)=> const Ajoutcategorieproduit()));
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> const Pagecommande()));
           });
         },
-        backgroundColor: Colors.white,
-        child: Icon(Icons.add)
+        backgroundColor: Colors.teal.shade700,
+        child: Icon(Icons.add,color: Colors.white,)
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       body: SafeArea(
@@ -102,8 +104,7 @@ class _AnimatedBarExampleState extends State<AnimatedBarExample> {
           controller: controller,
           children: const [
             Home(),
-            //Center(child: Text('Home')),
-            Center(child: Text('Demandes')),
+            Demandes(),
             Profile()
           ],
         ),

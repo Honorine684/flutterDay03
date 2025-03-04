@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'package:vassanou/Authentification/Login.dart';
 import 'package:vassanou/Component/Bottombar.dart';
 import 'package:vassanou/JsonModel/CategorieCommerce.dart';
@@ -32,11 +32,12 @@ class SignupState extends State<Signup> {
   void initState() {
     super.initState();
     loadCategories();
-    loadStand();
+    
   }
 
   List<Categoriecommerce> categorieCommerce = [];
   Categoriecommerce? selectedCategory;
+  String? selectedCategoryId;
   void loadCategories() {
     print("Démarrage du chargement des catégories...");
     Firestoreservices().getCategorieCommerce().listen((snapshot) {
@@ -71,14 +72,15 @@ class SignupState extends State<Signup> {
 
   List<Stand> standList = [];
   Stand? selectedStand;
-  void loadStand() {
+  Future<void>loadStand(String idCat) async{
     print("Démarrage du chargement des stands...");
     Firestoreservices().getStandsWithCategorie().listen((snapshot) {
       print("Données reçues: ${snapshot.docs.length} documents");
       List<Stand> stands = [];
 
       for (var doc in snapshot.docs) {
-        try {
+        if(doc.get("categorieId") == idCat){
+          try {
           String standId = doc.id;
           String categorieId = doc.get('categorieId');
           String emplacement = doc.get('emplacement');
@@ -96,6 +98,7 @@ class SignupState extends State<Signup> {
               disponibilite: disponibilite));
         } catch (e) {
           print("Erreur sur un document: $e");
+        }
         }
       }
 
@@ -560,10 +563,15 @@ class SignupState extends State<Signup> {
                               child: Text(categorie.libelle),
                             );
                           }).toList(),
-                          onChanged: (Categoriecommerce? newValue) {
+                          onChanged: (Categoriecommerce? newValue) async{
                             setState(() {
                               selectedCategory = newValue;
+                              selectedCategoryId = selectedCategory!.id;
+                              
                             });
+                            print("loading stand .........");
+                            await loadStand(selectedCategoryId!);
+                            print("end stand loading.........");
                           },
                         ),
                       ),
@@ -789,4 +797,4 @@ Widget _buildInfoRow(String label, String value) {
       ],
     ),
   );
-}
+}*/

@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:vassanou/Authentification/Login.dart';
 import 'package:vassanou/Component/Bottombar.dart';
-
+import 'package:vassanou/Services/firebase/Auth.dart';
 
 class Signup1 extends StatefulWidget {
   const Signup1({super.key});
@@ -22,12 +22,9 @@ class SignupState extends State<Signup1> {
   bool showConfirmPassword = false;
   bool isLoading = false;
   final formKey = GlobalKey<FormState>();
-  
 
   // verification email et numero tel
   String? validateEmail(String? value) {
-
-
     const pattern = r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'"
         r'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-'
         r'\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*'
@@ -42,7 +39,6 @@ class SignupState extends State<Signup1> {
       return null;
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -75,63 +71,61 @@ class SignupState extends State<Signup1> {
                     )
                   ],
                 ),
-                
+
                 Container(
-                    margin: const EdgeInsets.all(8),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Colors.teal.shade700,
-                          width: 2.0,
-                        ),
-                      ),
-                    ),
-                    child: TextFormField(
-                      validator: (value){
-                        if(value!.isEmpty){
-                          return "Ce champ est obligatoire";
-                        }else{
-                          return null;
-                        }
-                      },
-                      
-                      controller: name,
-                      decoration: const InputDecoration(
-                        icon: Icon(Icons.sms),
-                        border: InputBorder.none,
-                        hintText: "Nom complet",
+                  margin: const EdgeInsets.all(8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.teal.shade700,
+                        width: 2.0,
                       ),
                     ),
                   ),
+                  child: TextFormField(
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Ce champ est obligatoire";
+                      } else {
+                        return null;
+                      }
+                    },
+                    controller: name,
+                    decoration: const InputDecoration(
+                      icon: Icon(Icons.sms),
+                      border: InputBorder.none,
+                      hintText: "Nom complet",
+                    ),
+                  ),
+                ),
 
                 // email ou tel
-                
-                  
-                  Container(
-                    margin: const EdgeInsets.all(8),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Colors.teal.shade700,
-                          width: 2.0,
-                        ),
-                      ),
-                    ),
-                    child: TextFormField(
-                      validator: (value) => validateEmail(value),
-                      keyboardType: TextInputType.emailAddress,
-                      controller: email,
-                      decoration: const InputDecoration(
-                        icon: Icon(Icons.sms),
-                        border: InputBorder.none,
-                        hintText: "email",
+
+                Container(
+                  margin: const EdgeInsets.all(8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.teal.shade700,
+                        width: 2.0,
                       ),
                     ),
                   ),
+                  child: TextFormField(
+                    validator: (value) => validateEmail(value),
+                    keyboardType: TextInputType.emailAddress,
+                    controller: email,
+                    decoration: const InputDecoration(
+                      icon: Icon(Icons.sms),
+                      border: InputBorder.none,
+                      hintText: "email",
+                    ),
+                  ),
+                ),
 
                 //password
                 Container(
@@ -226,43 +220,53 @@ class SignupState extends State<Signup1> {
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.teal.shade700),
                   child: TextButton(
-                    onPressed:isLoading ?null: () async {
-                    setState(() {
-                      isLoading = true;
-                    });
-                    if (formKey.currentState!.validate()) {
-                      // Logique de connexion
-                      try{
-                       /* await Auth().createUserWithEmailAndPassword(
-                          name.text,email.text, password.text
-                        );*/
-                        setState(() {
-                      isLoading = false;
-                    });
-                      }on FirebaseAuthException catch(e){
-                        setState(() {
-                      isLoading = false;
-                    });
-                        // message d'erreur
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("${e.message}"),
-                          behavior: SnackBarBehavior.floating,
-                          backgroundColor: Color(0xffE9494F),
-                          showCloseIcon: true,
+                    onPressed: isLoading
+                        ? null
+                        : () async {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            if (formKey.currentState!.validate()) {
+                              // Logique de connexion
+                              try {
+                                Auth().createUserWithEmailAndPassword(
+                                  name: name.text,
+                                  email: email.text,
+                                  password: password.text,
+                                );
+                                setState(() {
+                                  isLoading = false;
+                                });
+                              } on FirebaseAuthException catch (e) {
+                                setState(() {
+                                  isLoading = false;
+                                });
+                                // message d'erreur
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text("${e.message}"),
+                                    behavior: SnackBarBehavior.floating,
+                                    backgroundColor: Color(0xffE9494F),
+                                    showCloseIcon: true,
+                                  ),
+                                );
+                              }
+                              // naviguer vers la page home
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const AnimatedBarExample()));
+                            }
+                          },
+                    child: isLoading
+                        ? const CircularProgressIndicator()
+                        : Text(
+                            "S'inscrire",
+                            style: TextStyle(
+                                fontSize: largeurEcran * 0.04,
+                                color: Colors.white),
                           ),
-                          
-                        );
-                      }
-                      // naviguer vers la page home
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const AnimatedBarExample()));
-                    }
-                  },
-                  child: isLoading ? const CircularProgressIndicator():
-                    Text(
-                      "S'inscrire",
-                      style: TextStyle(
-                          fontSize: largeurEcran * 0.04, color: Colors.white),
-                    ),
                   ),
                 ),
                 //bouton de connexion

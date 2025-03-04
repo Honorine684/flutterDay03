@@ -42,14 +42,13 @@ class ProfileState extends State<Profile> {
       print("Erreur lors de la récupération des données utilisateur: $e");
     }
   }
-  // recupere la premiere lettre de son nom 
- String getFirstLetter(String name) {
+
+  // recupere la premiere lettre de son nom
+  String getFirstLetter(String name) {
     return name.isNotEmpty ? name[0] : ''; // Retourne la première lettre
   }
 
-
-
-@override
+  @override
   void initState() {
     getUserData();
     super.initState();
@@ -70,37 +69,25 @@ class ProfileState extends State<Profile> {
         child: Column(
           children: [
             SizedBox(
-              height: 20,
+              height: 40,
             ),
-            Center(
-                child: Text(
-              "My profile",
-              style: TextStyle(
-                fontSize: 21,
-                fontWeight: FontWeight.bold,
-              ),
-            )),
-            SizedBox(
-              height: 20,
-            ),
+          
             Row(
               children: [
                 Container(
-                  width: 120,
-                  height: 120,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.blue.shade100
-                      ),
-                  child: Center(
-                    child: Text(
-                      getFirstLetter(name), 
+                    width: 120,
+                    height: 120,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, color: Colors.teal.shade700),
+                    child: Center(
+                        child: Text(
+                      getFirstLetter(name),
                       style: TextStyle(
-                        fontSize: 60, 
-                        fontWeight: FontWeight.bold, 
-                        color: Colors.white, 
-                      ),  ))  
-                ),
+                        fontSize: 60,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ))),
                 SizedBox(
                   width: 60,
                 ),
@@ -146,16 +133,21 @@ class ProfileState extends State<Profile> {
             ),
             Row(
               children: [
-                Icon(
-                  Icons.sell,
-                  color: Color(0xffE9494F),
+                Container(
+                  width: 35,
+                  height: 35,
+                  decoration: BoxDecoration(
+                      color: Color(0xffE9494F), shape: BoxShape.circle),
+                  child: IconButton(
+                      onPressed: () => {}, icon: Icon(Icons.person,color: Colors.white,)),
                 ),
+                SizedBox(width: 10,),
                 Text(
-                  "Vendu",
-                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                  "Informations personnelles",
+                  style: TextStyle(fontSize: 15,),
                 ),
                 SizedBox(
-                  width: 190,
+                  width: 40,
                 ),
                 IconButton(onPressed: () {}, icon: Icon(Icons.chevron_right))
               ],
@@ -166,16 +158,21 @@ class ProfileState extends State<Profile> {
             ),
             Row(
               children: [
-                Icon(
-                  Icons.task_alt,
-                  color: Color(0xffE9494F),
+                Container(
+                  width: 35,
+                  height: 35,
+                  decoration: BoxDecoration(
+                      color: Color(0xffE9494F), shape: BoxShape.circle),
+                  child: IconButton(
+                      onPressed: () => {}, icon: Icon(Icons.sell,color: Colors.white,)),
                 ),
+                SizedBox(width: 10,),
                 Text(
-                  "Parler au chef",
-                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                  "Ventes",
+                  style: TextStyle(fontSize: 15, ),
                 ),
                 SizedBox(
-                  width: 130,
+                  width: 170,
                 ),
                 IconButton(onPressed: () {}, icon: Icon(Icons.chevron_right))
               ],
@@ -184,9 +181,93 @@ class ProfileState extends State<Profile> {
             SizedBox(
               height: 10,
             ),
+            SizedBox(
+              height: 10,
+            ),
             Row(
               children: [
-                IconButton(
+                Container(
+                  width: 35,
+                  height: 35,
+                  decoration: BoxDecoration(
+                      color: Color(0xffE9494F), shape: BoxShape.circle),
+                  child: IconButton(
+                      onPressed: () => {}, icon: Icon(Icons.money,color: Colors.white,)),
+                ),
+                SizedBox(width: 10,),
+                Text(
+                  "Porte monnaie",
+                  style: TextStyle(fontSize: 15, ),
+                ),
+                SizedBox(
+                  width: 110,
+                ),
+                IconButton(onPressed: () {}, icon: Icon(Icons.chevron_right))
+              ],
+            ),
+            Divider(thickness: 2, color: Colors.grey.withOpacity(0.5)),
+
+            Row(
+              children: [
+                Container(
+                  width: 35,
+                  height: 35,
+                  decoration: BoxDecoration(
+                      color: Color(0xffE9494F), shape: BoxShape.circle),
+                  child: IconButton(
+                      onPressed: () => {}, icon: Icon(Icons.call,color: Colors.white,)),
+                ),
+                SizedBox(width: 10,),
+                Text(
+                  "Contactez le chef",
+                  style: TextStyle(fontSize: 15, ),
+                ),
+                SizedBox(
+                  width: 90,
+                ),
+                IconButton(onPressed: () {}, icon: Icon(Icons.chevron_right))
+              ],
+            ),
+            Divider(thickness: 2, color: Colors.grey.withOpacity(0.5)),
+            SizedBox(
+              height: 10,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                Container(
+                  width: 35,
+                  height: 35,
+                  decoration: BoxDecoration(
+                      color: Color(0xffE9494F), shape: BoxShape.circle),
+                  child: IconButton(
+                      onPressed: () => {}, icon: Icon(Icons.settings,color: Colors.white,)),
+                ),
+                SizedBox(width: 10,),
+                Text(
+                  "Paramètres",
+                  style: TextStyle(fontSize: 15, ),
+                ),
+                SizedBox(
+                  width: 115,
+                ),
+                IconButton(onPressed: () {
+                  
+                }, icon: Icon(Icons.chevron_right))
+              ],
+            ),
+            Divider(thickness: 2, color: Colors.grey.withOpacity(0.5)),
+            Row(
+              children: [
+                Container(
+                  width: 35,
+                  height: 35,
+                  decoration: BoxDecoration(
+                    color: Color(0xffE9494F),shape: BoxShape.circle
+                  ),
+                  child: IconButton(
                   onPressed: () {
                     Auth().logout();
                     Navigator.of(context).pushAndRemoveUntil(
@@ -196,12 +277,14 @@ class ProfileState extends State<Profile> {
                   },
                   icon: Icon(
                     Icons.logout,
-                    color: Color(0xffE9494F),
+                    color: Color(0xffffffff),
                   ),
                 ),
+                ),
+                SizedBox(width: 10,),
                 Text(
                   "Déconnexion",
-                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 15, ),
                 ),
                 SizedBox(
                   width: 110,

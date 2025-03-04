@@ -10,17 +10,17 @@ class Auth {
   User? get currentUser =>_firebaseAuth.currentUser;
   Stream<User?> get authStateChanges =>_firebaseAuth.authStateChanges();
   //fonction pour stocker les données utilisateur
-Future<void> createUserWithEmailAndPassword({
+Future<void> createUserWithEmailAndPassword( {
   required String name,
   required String email, 
   required String password,
-  String? pseudo,
+ /* String? pseudo,
   String? phoneNumber,
   String? categorieId,
   String? categorieLibelle,
   String? standId,
-  String? numeroStand,
-  String role = 'vendeuse'
+  String? numeroStand,*/
+  String role = 'client'
 }) async {
   try {
     // Créer l'utilisateur dans Authentication
@@ -34,24 +34,24 @@ Future<void> createUserWithEmailAndPassword({
       await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
         'name': name,
         'email': email,
-        'phoneNumber': phoneNumber,
+        /*'phoneNumber': phoneNumber,
         'categorieId': categorieId,
         'categorieLibelle': categorieLibelle,
         'pseudo':pseudo,
         'standId': standId,
-        'numeroStand': numeroStand,
+        'numeroStand': numeroStand,*/
         'role': role,
         'timestamp': Timestamp.now(), 
         
       });
       
       // mettre à jour  disponibilité stand
-      if (standId != null && standId.isNotEmpty) {
+     /* if (standId != null && standId.isNotEmpty) {
         await FirebaseFirestore.instance.collection('stands').doc(standId).update({
           'disponibilite': 'occupé',
           'utilisateurId': userCredential.user!.uid
         });
-      }
+      }*/
     }
   } catch (e) {
     

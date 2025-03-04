@@ -1,6 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:vassanou/JsonModel/CategorieProduit.dart';
+import 'package:vassanou/JsonModel/Produit.dart';
+import 'package:vassanou/Pages/PageDetailsProduits.dart';
+import 'package:vassanou/Pages/editPage.dart';
+import 'package:vassanou/Services/firebase/Auth.dart';
 import 'package:vassanou/Services/firebase/FirestoreServices.dart';
+import 'package:intl/intl.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -11,85 +17,13 @@ class Home extends StatefulWidget {
   }
 }
 
-final List<Map<String, String>> categories = [
-  {
-    "image": "assets/images/fruit.png",
-    "texte": "Crudités",
-    "nom": "fruit et legume"
-  },
-  {
-    "image": "assets/images/fruit.png",
-    "texte": "Divers",
-    "nom": "Lait et Sucré"
-  },
-  {
-    "image": "assets/images/fruit.png",
-    "texte": "Dinner",
-    "nom": "Lait et Sucré"
-  },
-  {
-    "image": "assets/images/fruit.png",
-    "texte": "fast food",
-    "nom": "Lait et Sucré"
-  },
-  {
-    "image": "assets/images/fruit.png",
-    "texte": "Dessert",
-    "nom": "Lait et Sucré"
-  },
-  {"image": "assets/images/fruit.png", "texte": "Sain", "nom": "Lait et Sucré"},
-  {"image": "assets/images/fruit.png", "texte": "Plus", "nom": "Lait et Sucré"}
-];
-
-final List<Map<String, String>> products = [
-  {
-    "image": "assets/images/tomate.jpg",
-    "texte": "Tomate solide",
-    "auteur": "10kg",
-    "prix": "\$12.32"
-  },
-  {
-    "image": "assets/images/tomate.jpg",
-    "texte": "Tomate solide",
-    "auteur": "10kg",
-    "prix": "\$12.32"
-  },
-  {
-    "image": "assets/images/tomate.jpg",
-    "texte": "Tomate solide",
-    "auteur": "10kg",
-    "prix": "\$12.32"
-  },
-  {
-    "image": "assets/images/tomate.jpg",
-    "texte": "Tomate solide",
-    "auteur": "10kg",
-    "prix": "\$12.32"
-  },
-  {
-    "image": "assets/images/tomate.jpg",
-    "texte": "Tomate solide",
-    "auteur": "10kg",
-    "prix": "\$12.32"
-  },
-  {
-    "image": "assets/images/tomate.jpg",
-    "texte": "Tomate solide",
-    "auteur": "10kg",
-    "prix": "\$12.32"
-  },
-  {
-    "image": "assets/images/tomate.jpg",
-    "texte": "Tomate solide",
-    "auteur": "10kg",
-    "prix": "\$12.32"
-  },
-];
 
 class HomeSate extends State<Home> {
   bool voirRecherche = false;
   final searchController = TextEditingController();
   int indexSelectionne = 0;
+  List<Produit> produits = [];
+  String? userCategorieCommerceId;
   @override
   void dispose() {
     searchController.dispose();
@@ -98,21 +32,102 @@ class HomeSate extends State<Home> {
  @override
   void initState() {
     super.initState();
-    loadCategories(); 
+    getUserCategorieCommerce();
+    loadProduits("");
   }
+void loadProduits(String selectedCategorieId) {
+  print("Chargement des produits pour la catégorie: $selectedCategorieId");
+  
+  Firestoreservices().getProduits().listen((snapshot) {
+    print("Données reçues: ${snapshot.docs.length} produits");
+    List<Produit> listeProduits = [];
+
+    for (var doc in snapshot.docs) {
+      try {
+        // Filtrer par catégorie si une catégorie est sélectionnée
+        if (selectedCategorieId.isEmpty || doc.get('categorieProduitId') == selectedCategorieId) {
+          String produitId = doc.id;
+          String categorieProduitId = doc.get('categorieProduitId');
+          String categorieProduitLibelle = doc.get('categorieProduitLibelle');
+          String nom = doc.get('nom');
+          String description = doc.get('description');
+          String idMesure = doc.get('idMesure');
+          String uniteMesure = doc.get('uniteMesure');
+          double prixUnitaire = doc.get('prixUnitaire').toDouble();
+          String photo = doc.get('photo');
+          String userId = doc.get('userId');
+
+          // Vérifier si le produit appartient à l'utilisateur actuel
+          final User? currentUser = Auth().currentUser;
+          if (currentUser != null && userId == currentUser.uid) {
+            listeProduits.add(Produit(
+              id: produitId,
+              categorieProduitId: categorieProduitId,
+              categorieProduitLibelle: categorieProduitLibelle,
+              nom: nom,
+              description: description,
+              idMesure: idMesure,
+              uniteMesure: uniteMesure,
+              prixUnitaire: prixUnitaire,
+              photo: photo,
+              userId: userId,
+            ));
+          }
+        }
+      } catch (e) {
+        print("Erreur sur un document produit: $e");
+      }
+    }
+
+    setState(() {
+      produits = listeProduits;
+      print("Produits chargés: ${produits.length}");
+    });
+  }, onError: (error) {
+    print("Erreur lors du chargement des produits: $error");
+  });
+}
+
+  void getUserCategorieCommerce() async {
+    try {
+      // Récupérer l'utilisateur actuellement connecté
+      final User? user = Auth().currentUser;
+      if (user != null) {
+        // Récupérer les données de l'utilisateur depuis Firestore
+        final userData = await Firestoreservices().getUserData(user.uid);
+        if (userData != null && userData.exists) {
+          final categorieCommerceId = userData.get('categorieId');
+          setState(() {
+            userCategorieCommerceId = categorieCommerceId;
+            print("Catégorie de commerce de l'utilisateur: $userCategorieCommerceId");
+            
+            // Maintenant que nous avons l'ID, chargeons les catégories de produits
+            if (userCategorieCommerceId != null) {
+              loadCategories(userCategorieCommerceId!);
+            }
+          });
+        }
+      }
+    } catch (e) {
+      print("Erreur lors de la récupération de la catégorie de commerce: $e");
+    }
+  }
+  
   List<Categorieproduit> categorieproduit = [];
   Categorieproduit? selectedProduit;
-  void loadCategories() {
+  void loadCategories(String categorieCommerceId) {
     print("Démarrage du chargement des catégories...");
     Firestoreservices().getCategorieProduit().listen((snapshot) {
       print("Données reçues: ${snapshot.docs.length} documents");
       List<Categorieproduit> categories = [];
 
       for (var doc in snapshot.docs) {
-        try {
+        if(categorieCommerceId == doc.get('categorieCommerceId')){
+          try {
 
           
           String categoryId = doc.id;
+          String categorieCommerceId = doc.get('categorieCommerceId');
           String libelle = doc.get('libcat'); 
           String description = doc.get('description');
           String photo = doc.get('photo');
@@ -122,6 +137,7 @@ class HomeSate extends State<Home> {
           categories
               .add(Categorieproduit(
               id: categoryId, 
+              categorieCommerceId: categorieCommerceId,
               libelle: libelle,
               description: description,
               photo: photo,
@@ -129,6 +145,8 @@ class HomeSate extends State<Home> {
         } catch (e) {
           print("Erreur sur un document: $e");
         }
+        }
+        
       }
 
       setState(() {
@@ -294,7 +312,7 @@ class HomeSate extends State<Home> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Categories",
-                    textDirection: TextDirection.ltr,
+                    
                     style:
                         TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 Text(
@@ -316,6 +334,7 @@ class HomeSate extends State<Home> {
                       setState(() {
                         indexSelectionne = index;
                         selectedProduit = categorieproduit[index];
+                        loadProduits(selectedProduit!.id);
                       });
                     },
                     child: Container(
@@ -396,7 +415,7 @@ class HomeSate extends State<Home> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Vos produits",
-                    textDirection: TextDirection.ltr,
+                    
                     style:
                         TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               ],
@@ -415,82 +434,76 @@ class HomeSate extends State<Home> {
                   crossAxisSpacing: 8,
                   childAspectRatio: 0.75,
                 ),
-                itemCount: products.length,
-                itemBuilder: (context, index) => Container(
+                itemCount: produits.length,
+                itemBuilder: (context, index) => 
+                GestureDetector(
+                  onTap: () => 
+                  Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>PageDetailsProduits(produit: produits[index]),
+        ),
+      ),
+                  child: Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
-                      color: Color(0xFFf5f5f5)),
+                      border: Border.all(color: Colors.black.withOpacity(0.2)),
+                      ),
                   child: Column(
                     children: [
                       Row(
                         children: [
-
-                         
-                          Text(
-                            "Modifier",
-                            style: TextStyle(
-                                fontSize: 10, color: Color(0xFFEBB65B)),
-                          )
+                          IconButton(onPressed: (){
+                            Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>Editpage(produit: produits[index]),
+        ),
+      );
+                          },
+                          icon: Icon(Icons.edit,color: Color(0xffE9494F),))
                         ],
                       ),
                       Image.asset(
-                        products[index]["image"]!,
+                        "assets/images/${produits[index].photo}",
                         width: 100,
-                        height: 70,
+                        height: 60,
                         fit: BoxFit.cover,
                       ),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            products[index]["texte"]!,
+                      Text(
+                            produits[index].nom,
                             style: TextStyle(
                                 color: Colors.teal.shade700,
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 10,
                           ),
-                          Text(
-                            products[index]["auteur"]!,
-                            style: TextStyle(fontSize: 12),
-                          )
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                         // SizedBox(width: 8,),
-                          Text(products[index]["prix"]!,
-                              style: TextStyle(
-                                  fontSize: 13, fontWeight: FontWeight.bold)),
                           
-                        ],
-                      ),
-                      SizedBox(height: 15),
+                          Text("en ${produits[index].uniteMesure}",
+                              style: TextStyle(
+                                  fontSize: 10, )),
+                      
+                      SizedBox(height: 12,),
                       Row(
                             children: [
-                              SizedBox(width: 40,),
+                              SizedBox(width: 5,),
+                              Text(
+                            NumberFormat.simpleCurrency().format(produits[index].prixUnitaire),
+                            style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),
+                          ),
+                          Spacer(),
                               IconButton(
                                 onPressed: (){
+                                  Firestoreservices().deleteProduit(produits[index].id);
                                 }, 
                                 icon: Icon(Icons.delete, color: Color(0xFFE9494F)),
                                 ),
-                              Text("Supprimer",
-                                  style: TextStyle(
-                                      fontSize: 10, color: Color(0xFFE9494F))),
+                              
                             ],
                           )
                     ],
                   ),
                 ),
+                )
               
             )
           ],
