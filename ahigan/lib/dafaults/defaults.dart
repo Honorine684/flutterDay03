@@ -27,12 +27,12 @@ class Defaults {
   static final drawerItemIcon = [
     Icons.inbox,
     Icons.star,
-    Icons.send,
+    Icons.mark_unread_chat_alt_sharp,
     Icons.mail,
-    Icons.delete,
+    Icons.shopping_bag,
     Icons.warning_rounded,
-    Icons.delete,
-    Icons.warning_rounded,
+    Icons.person,
+    Icons.person_4_outlined,
     
   ];
 }

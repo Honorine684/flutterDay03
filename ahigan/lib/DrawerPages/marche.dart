@@ -155,7 +155,7 @@ class _MarketInformationsState extends State<MarketInformations> {
                   }
 
                   if (snapshot.data!.docs.isEmpty) {
-                    return Center(child: Text('Aucun marché sans manager'));
+                    return Center(child: Text('Aucun marché sans'));
                   }
 
                   return ListView(

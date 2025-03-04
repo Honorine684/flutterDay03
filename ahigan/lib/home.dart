@@ -1,5 +1,6 @@
 
 import 'package:ahigan/DrawerPages/addcategorie.dart';
+import 'package:ahigan/DrawerPages/commande.dart';
 import 'package:ahigan/DrawerPages/dashboard.dart';
 import 'package:ahigan/DrawerPages/inscription.dart';
 import 'package:ahigan/DrawerPages/marche.dart';
@@ -38,7 +39,7 @@ class _MainPageState extends State<MainPage> {
     MarketInformations(),
     AddCategoriesToMarketPage(),
     Produit(),
-    Center(child: Text('Commandes')),
+    Commande(),
     Center(child: Text('Transactions')),
     Center(child: Text('Market Manager')),
     UsersPage(),
@@ -47,7 +48,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Image.asset('assets/images/logo.png', height: 100), backgroundColor: Color(0xFF9fd5cd),),
+      appBar: AppBar(title: Image.asset('assets/images/logo.png', height: 100), backgroundColor: Color(0xFF156651),),
 
       body: pages[indexClicked],
       drawer: Drawer(
@@ -56,7 +57,7 @@ class _MainPageState extends State<MainPage> {
           children: [
             DrawerHeader(
               decoration: BoxDecoration(
-                color: Color(0xFF9fd5cd)
+                color: Color(0xFF156651)
               ),
               padding: EdgeInsets.all(0),
               child: Container(
