@@ -5,6 +5,7 @@ import 'package:ahigan/DrawerPages/dashboard.dart';
 import 'package:ahigan/DrawerPages/inscription.dart';
 import 'package:ahigan/DrawerPages/marche.dart';
 import 'package:ahigan/DrawerPages/produits.dart';
+import 'package:ahigan/DrawerPages/transactions.dart';
 import 'package:ahigan/dafaults/defaults.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -39,8 +40,8 @@ class _MainPageState extends State<MainPage> {
     MarketInformations(),
     AddCategoriesToMarketPage(),
     Produit(),
-    Commande(),
-    Center(child: Text('Transactions')),
+    CommandePage(),
+    Transactions(),
     Center(child: Text('Market Manager')),
     UsersPage(),
   ];
@@ -48,7 +49,10 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Image.asset('assets/images/logo.png', height: 100), backgroundColor: Color(0xFF156651),),
+      appBar: AppBar(title: Image.asset('assets/images/logo.png', height: 100), backgroundColor: Color(0xFF156651),
+      iconTheme: IconThemeData(color: Colors.white),
+      
+      ),
 
       body: pages[indexClicked],
       drawer: Drawer(

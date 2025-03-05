@@ -32,7 +32,7 @@ class _MarketInformationsState extends State<MarketInformations> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Informations du Marché'),
+        title: Text('Marché'),
         actions: [
           IconButton(
             color: Color(0xFF9fd5cd),
