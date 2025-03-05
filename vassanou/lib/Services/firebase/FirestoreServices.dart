@@ -138,17 +138,26 @@ Future<void> deleteProduit(String idProduit)async{
 // ajouter commande bdd
 final CollectionReference commandes = FirebaseFirestore.instance.collection('commandes');
 //ajouter une commande
-Future<DocumentReference<Object?>>  addCommande(String userId,String username,String vendeuseId,String vendeuseName,String produit,double prix,{String etat = 'lancer'}) async{
+Future<DocumentReference<Object?>>  addCommande(String userId,String username,String vendeuseId,String vendeuseName,int numCommande, String produit,double prix,{String etat = 'lancer'}) async{
   return commandes.add({
     'userId':userId,
     'userName':username,
     'vendeuseId':vendeuseId,
     'vendeuseName':vendeuseName,
+    'numCommande':numCommande,
     'produit':produit,
     'prix':prix,
     'etat':etat,
     'timestamp': Timestamp.now()
     
   });
+}
+
+// recuperer commande 
+
+Stream<QuerySnapshot> getCommandes() {
+  final comStream = commandes.snapshots();
+
+  return comStream;
 }
  }

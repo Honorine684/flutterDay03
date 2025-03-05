@@ -190,12 +190,12 @@ class EditpageState extends State<Editpage> {
      Firestoreservices(). 
      updateProduit(
         widget.produit.id,
-        categorieProduitId!,
-        categorieProduitLibelle!,
+        categorieProduitId??'',
+        categorieProduitLibelle??'',
         nom.text,
         description.text,
-        idMesure!,
-        uniteMesure!,
+        idMesure??'',
+        uniteMesure??'',
         newPrixUnitaire,
         photo.text,
       );

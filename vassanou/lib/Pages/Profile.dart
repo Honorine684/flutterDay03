@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:vassanou/Authentification/Login.dart';
+import 'package:vassanou/Pages/ParametresPage.dart';
 import 'package:vassanou/Services/firebase/Auth.dart';
 
 class Profile extends StatefulWidget {
@@ -62,7 +64,7 @@ class ProfileState extends State<Profile> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
-        actions: [Icon(Icons.settings)],
+        
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 20),
@@ -137,13 +139,13 @@ class ProfileState extends State<Profile> {
                   width: 35,
                   height: 35,
                   decoration: BoxDecoration(
-                      color: Color(0xffE9494F), shape: BoxShape.circle),
+                      color: Color(0xffEBB65B), shape: BoxShape.circle),
                   child: IconButton(
                       onPressed: () => {}, icon: Icon(Icons.person,color: Colors.white,)),
                 ),
                 SizedBox(width: 10,),
                 Text(
-                  "Informations personnelles",
+                  "Changer mot de passe",
                   style: TextStyle(fontSize: 15,),
                 ),
                 SizedBox(
@@ -162,7 +164,7 @@ class ProfileState extends State<Profile> {
                   width: 35,
                   height: 35,
                   decoration: BoxDecoration(
-                      color: Color(0xffE9494F), shape: BoxShape.circle),
+                      color: Color(0xffEBB65B), shape: BoxShape.circle),
                   child: IconButton(
                       onPressed: () => {}, icon: Icon(Icons.sell,color: Colors.white,)),
                 ),
@@ -190,7 +192,7 @@ class ProfileState extends State<Profile> {
                   width: 35,
                   height: 35,
                   decoration: BoxDecoration(
-                      color: Color(0xffE9494F), shape: BoxShape.circle),
+                      color: Color(0xffEBB65B), shape: BoxShape.circle),
                   child: IconButton(
                       onPressed: () => {}, icon: Icon(Icons.money,color: Colors.white,)),
                 ),
@@ -213,9 +215,21 @@ class ProfileState extends State<Profile> {
                   width: 35,
                   height: 35,
                   decoration: BoxDecoration(
-                      color: Color(0xffE9494F), shape: BoxShape.circle),
+                      color: Color(0xffEBB65B), shape: BoxShape.circle),
                   child: IconButton(
-                      onPressed: () => {}, icon: Icon(Icons.call,color: Colors.white,)),
+                      onPressed: ()async {
+                        final Uri url = Uri(
+                          scheme: 'tel',
+                          path: '0153827047'
+                        );
+                        if(await canLaunchUrl(url)){
+                          await launchUrl(url);
+
+                        }else{
+                          print("peut pas accéder à cet url");
+                        }
+                      }, 
+                      icon: Icon(Icons.call,color: Colors.white,)),
                 ),
                 SizedBox(width: 10,),
                 Text(
@@ -241,9 +255,11 @@ class ProfileState extends State<Profile> {
                   width: 35,
                   height: 35,
                   decoration: BoxDecoration(
-                      color: Color(0xffE9494F), shape: BoxShape.circle),
+                      color: Color(0xffEBB65B), shape: BoxShape.circle),
                   child: IconButton(
-                      onPressed: () => {}, icon: Icon(Icons.settings,color: Colors.white,)),
+                      onPressed: () => {
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> const ParametresPage()))
+                      }, icon: Icon(Icons.settings,color: Colors.white,)),
                 ),
                 SizedBox(width: 10,),
                 Text(
@@ -251,7 +267,7 @@ class ProfileState extends State<Profile> {
                   style: TextStyle(fontSize: 15, ),
                 ),
                 SizedBox(
-                  width: 115,
+                  width: 140,
                 ),
                 IconButton(onPressed: () {
                   
@@ -265,7 +281,7 @@ class ProfileState extends State<Profile> {
                   width: 35,
                   height: 35,
                   decoration: BoxDecoration(
-                    color: Color(0xffE9494F),shape: BoxShape.circle
+                    color: Color(0xffEBB65B),shape: BoxShape.circle
                   ),
                   child: IconButton(
                   onPressed: () {
@@ -287,7 +303,7 @@ class ProfileState extends State<Profile> {
                   style: TextStyle(fontSize: 15, ),
                 ),
                 SizedBox(
-                  width: 110,
+                  width: 120,
                 ),
                 IconButton(onPressed: () {}, icon: Icon(Icons.chevron_right))
               ],

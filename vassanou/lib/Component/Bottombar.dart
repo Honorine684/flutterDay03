@@ -5,7 +5,6 @@ import 'package:vassanou/Pages/AjoutProduit.dart';
 import 'package:vassanou/Pages/Demandes.dart';
 
 import 'package:vassanou/Pages/Home.dart';
-import 'package:vassanou/Pages/PageCommande.dart';
 import 'package:vassanou/Pages/Profile.dart';
 
 class AnimatedBarExample extends StatefulWidget {
@@ -92,7 +91,7 @@ class _AnimatedBarExampleState extends State<AnimatedBarExample> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           setState(() {
-            Navigator.push(context, MaterialPageRoute(builder: (context)=> const Pagecommande()));
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> const AjoutProduit()));
           });
         },
         backgroundColor: Colors.teal.shade700,

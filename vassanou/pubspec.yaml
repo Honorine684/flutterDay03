@@ -40,6 +40,7 @@ dependencies:
   cloud_firestore: ^5.6.5
   shared_preferences: ^2.5.2
   intl: ^0.18.0
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:
@@ -75,6 +76,7 @@ flutter:
     - assets/images/mar.jpeg
     - assets/images/mar1.jpeg
     - assets/images/mar3.jpeg
+    - assets/images/wat.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
