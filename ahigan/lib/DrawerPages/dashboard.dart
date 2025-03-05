@@ -124,7 +124,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               barRods: [
                                 BarChartRodData(
                                   toY: entry.value.toDouble(),
-                                  color: Colors.blueAccent,
+                                  color: Color(0xFF156651),
                                   width: 20,
                                   borderRadius: BorderRadius.circular(4),
                                 ),

@@ -8,10 +8,7 @@ class UsersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Informations Utilisateurs'),
-        backgroundColor: Color(0xFF9fd5cd), // Couleur de l'app bar
-      ),
+
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: StreamBuilder<QuerySnapshot>(

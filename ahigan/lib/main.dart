@@ -1,5 +1,6 @@
 
 import 'package:ahigan/home.dart';
+import 'package:ahigan/livraison.dart';
 import 'package:ahigan/login.dart';
 import 'package:ahigan/user.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   List<Widget> pageList = [MainPage(), 
           ProfilePage(),
-          ProfilePage(), 
+          DeliveryPage(), 
           ProfilePage(), 
           ];
 

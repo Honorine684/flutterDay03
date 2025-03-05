@@ -200,7 +200,7 @@ class _CommandePageState extends State<CommandePage> {
                                   ? const CircularProgressIndicator()
                                   : ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: Color(0xFF9fd5cd),
+                                        backgroundColor: Colors.white,
                                         textStyle: const TextStyle(color: Colors.white),
                                       ),
                                       onPressed: () {
@@ -208,7 +208,7 @@ class _CommandePageState extends State<CommandePage> {
                                       },
                                       child: const Text(
                                         'Livrer',
-                                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
+                                        style: TextStyle(color: Color(0xFF156651), fontWeight: FontWeight.bold, fontSize: 15),
                                       ),
                                     ))
                               : const Icon(Icons.check, color: Colors.white),
