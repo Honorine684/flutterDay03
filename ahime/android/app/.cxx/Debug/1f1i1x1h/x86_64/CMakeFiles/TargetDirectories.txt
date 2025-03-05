@@ -1,0 +1,2 @@
+C:/Users/Oswald/Desktop/dclic/New/flutterDay03/ahime/android/app/.cxx/Debug/1f1i1x1h/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/Oswald/Desktop/dclic/New/flutterDay03/ahime/android/app/.cxx/Debug/1f1i1x1h/x86_64/CMakeFiles/rebuild_cache.dir
