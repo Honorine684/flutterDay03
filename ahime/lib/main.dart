@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'cart_page.dart';
 import 'home.dart';
 import 'profil.dart';
+import 'settings.dart'; // Importez la page des paramètres
 
 void main() {
   runApp(MyApp());
@@ -68,6 +69,7 @@ class _BottomNavBarExampleState extends State<BottomNavBarExample> {
           onRemoveItem: removeFromCart,
         ),
         Profil(),
+        SettingsPage(), // Ajoutez la page des paramètres ici
       ];
 
   void _onItemTapped(int index) {
@@ -98,6 +100,10 @@ class _BottomNavBarExampleState extends State<BottomNavBarExample> {
           BottomNavigationBarItem(
             icon: Icon(Icons.person, color: Color(0xFF156651)),
             label: 'Profil',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings, color: Color(0xFF156651)), // Ajoutez l'icône des paramètres
+            label: 'Paramètres',
           ),
         ],
       ),

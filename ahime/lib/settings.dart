@@ -16,17 +16,20 @@ class _SettingsPageState extends State<SettingsPage> {
   void initState() {
     super.initState();
     // Initialiser les contrôleurs avec des valeurs par défaut
-    _walletController.text = '10000'; 
-    _nameController.text = 'oswald'; 
-    _emailController.text = 'sossouvado@gmail.com'; // 
+    _walletController.text = '10000'; // Exemple de solde
+    _nameController.text = 'oswald'; // Exemple de nom
+    _emailController.text = 'sossouvado@gmail.com'; // Exemple d'email
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Paramètres' , style: TextStyle(color: Colors.white),),
-        backgroundColor: Color(0xFF156651), 
+        title: Text(
+          'Paramètres',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Color(0xFF156651), // Couleur de l'app bar
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -56,7 +59,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF156651),
+                backgroundColor: Color(0xFF156651), // Couleur du bouton
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               ),
               child: Text(
@@ -100,7 +103,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF156651),
+                backgroundColor: Color(0xFF156651), // Couleur du bouton
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               ),
               child: Text(
@@ -121,14 +124,14 @@ class _SettingsPageState extends State<SettingsPage> {
                 });
                 print('Notifications activées : $value');
               },
-              activeColor: Color(0xFF156651),
+              activeColor: Color(0xFF156651), // Couleur du switch
             ),
             SizedBox(height: 20),
 
             // Section : Sécurité
             _buildSectionTitle('Sécurité'),
             ListTile(
-              leading: Icon(Icons.lock, color: Color(0xFF156651)),
+              leading: Icon(Icons.lock, color: Color(0xFF156651)), // Icône
               title: Text('Changer le mot de passe'),
               onTap: () {
                 // Ajouter la logique pour changer le mot de passe
@@ -140,7 +143,7 @@ class _SettingsPageState extends State<SettingsPage> {
             // Section : Aide et Support
             _buildSectionTitle('Aide et Support'),
             ListTile(
-              leading: Icon(Icons.help, color: Color(0xFF156651)),
+              leading: Icon(Icons.help, color: Color(0xFF156651)), // Icône
               title: Text('Centre d\'aide'),
               onTap: () {
                 // Ajouter la logique pour accéder au centre d'aide
@@ -148,7 +151,8 @@ class _SettingsPageState extends State<SettingsPage> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.contact_support, color: Color(0xFF156651)),
+              leading: Icon(Icons.contact_support,
+                  color: Color(0xFF156651)), // Icône
               title: Text('Nous contacter'),
               onTap: () {
                 // Ajouter la logique pour contacter le support

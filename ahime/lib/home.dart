@@ -1,61 +1,73 @@
 import 'package:flutter/material.dart';
 import 'cart_page.dart';
+import 'settings.dart'; // Importez la page des paramètres
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   final Function(CartItem) addToCart;
 
   Home({required this.addToCart});
 
   @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  final List<String> cities = [
+    'Marché de Cadjèhoun',
+    'Marché Aïdjèdo',
+    'Marché de Gbégamey',
+    'Marché de Mènontin',
+    'Marché de Wologuèdè',
+    'Marché de Tokplégbé',
+    'Marché de Midombo',
+    'Marché de PK3',
+    'Marché de Sainte Trinité',
+  ];
+
+  final Map<String, List<Map<String, String>>> categoryItems = {
+    'Ustensiles': [
+      {'image': 'assets/dish.jpg', 'title': 'Ustensile 1', 'price': '500 CFA'},
+      {'image': 'assets/dish.jpg', 'title': 'Ustensile 2', 'price': '700 CFA'},
+      {'image': 'assets/dish.jpg', 'title': 'Ustensile 3', 'price': '900 CFA'},
+      {'image': 'assets/dish.jpg', 'title': 'Ustensile 4', 'price': '1200 CFA'},
+    ],
+    'Produits congelés': [
+      {'image': 'assets/poisson.jpg', 'title': 'Congelé 1', 'price': '1500 CFA'},
+      {'image': 'assets/poisson.jpg', 'title': 'Congelé 2', 'price': '2000 CFA'},
+      {'image': 'assets/poisson.jpg', 'title': 'Congelé 3', 'price': '2500 CFA'},
+      {'image': 'assets/poisson.jpg', 'title': 'Congelé 4', 'price': '3000 CFA'},
+    ],
+    'Fruits': [
+      {'image': 'assets/tomato.jpg', 'title': 'Fruit 1', 'price': '500 CFA'},
+      {'image': 'assets/tomato.jpg', 'title': 'Fruit 2', 'price': '700 CFA'},
+      {'image': 'assets/tomato.jpg', 'title': 'Fruit 3', 'price': '900 CFA'},
+      {'image': 'assets/tomato.jpg', 'title': 'Fruit 4', 'price': '1200 CFA'},
+    ],
+    'Légumes': [
+      {'image': 'assets/panierfruit.jpg', 'title': 'Légume 1', 'price': '500 CFA'},
+      {'image': 'assets/panierfruit.jpg', 'title': 'Légume 2', 'price': '700 CFA'},
+      {'image': 'assets/panierfruit.jpg', 'title': 'Légume 3', 'price': '900 CFA'},
+      {'image': 'assets/panierfruit.jpg', 'title': 'Légume 4', 'price': '1200 CFA'},
+    ],
+    'viande/poissons': [
+      {'image': 'assets/poisson.jpg', 'title': 'Poisson 1', 'price': '1500 CFA'},
+      {'image': 'assets/poisson.jpg', 'title': 'Poisson 2', 'price': '2000 CFA'},
+      {'image': 'assets/poisson.jpg', 'title': 'Poisson 3', 'price': '2500 CFA'},
+      {'image': 'assets/poisson.jpg', 'title': 'Poisson 4', 'price': '3000 CFA'},
+    ],
+  };
+
+  String? selectedCity;
+  String selectedCategory = 'Ustensiles'; // Catégorie par défaut
+
+  @override
+  void initState() {
+    super.initState();
+    selectedCity = cities.first;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final List<String> cities = [
-      'Marché de Cadjèhoun',
-      'Marché Aïdjèdo',
-      'Marché de Gbégamey',
-      'Marché de Mènontin',
-      'Marché de Wologuèdè',
-      'Marché de Tokplégbé',
-      'Marché de Midombo',
-      'Marché de PK3',
-      'Marché de Sainte Trinité',
-    ];
-
-    final Map<String, List<Map<String, String>>> categoryItems = {
-      'Ustensiles': [
-        {'image': 'assets/dish.jpg', 'title': 'Ustensile 1', 'price': '500 CFA'},
-        {'image': 'assets/dish.jpg', 'title': 'Ustensile 2', 'price': '700 CFA'},
-        {'image': 'assets/dish.jpg', 'title': 'Ustensile 3', 'price': '900 CFA'},
-        {'image': 'assets/dish.jpg', 'title': 'Ustensile 4', 'price': '1200 CFA'},
-      ],
-      'Produits congelés': [
-        {'image': 'assets/poisson.jpg', 'title': 'Congelé 1', 'price': '1500 CFA'},
-        {'image': 'assets/poisson.jpg', 'title': 'Congelé 2', 'price': '2000 CFA'},
-        {'image': 'assets/poisson.jpg', 'title': 'Congelé 3', 'price': '2500 CFA'},
-        {'image': 'assets/poisson.jpg', 'title': 'Congelé 4', 'price': '3000 CFA'},
-      ],
-      'Fruits': [
-        {'image': 'assets/tomato.jpg', 'title': 'Fruit 1', 'price': '500 CFA'},
-        {'image': 'assets/tomato.jpg', 'title': 'Fruit 2', 'price': '700 CFA'},
-        {'image': 'assets/tomato.jpg', 'title': 'Fruit 3', 'price': '900 CFA'},
-        {'image': 'assets/tomato.jpg', 'title': 'Fruit 4', 'price': '1200 CFA'},
-      ],
-      'Légumes': [
-        {'image': 'assets/panierfruit.jpg', 'title': 'Légume 1', 'price': '500 CFA'},
-        {'image': 'assets/panierfruit.jpg', 'title': 'Légume 2', 'price': '700 CFA'},
-        {'image': 'assets/panierfruit.jpg', 'title': 'Légume 3', 'price': '900 CFA'},
-        {'image': 'assets/panierfruit.jpg', 'title': 'Légume 4', 'price': '1200 CFA'},
-      ],
-      'viande/poissons': [
-        {'image': 'assets/poisson.jpg', 'title': 'Poisson 1', 'price': '1500 CFA'},
-        {'image': 'assets/poisson.jpg', 'title': 'Poisson 2', 'price': '2000 CFA'},
-        {'image': 'assets/poisson.jpg', 'title': 'Poisson 3', 'price': '2500 CFA'},
-        {'image': 'assets/poisson.jpg', 'title': 'Poisson 4', 'price': '3000 CFA'},
-      ],
-    };
-
-    String selectedCity = cities.first; // Texte par défaut du dropdown
-    String selectedCategory = 'Ustensiles'; // Catégorie par défaut
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF156651),
@@ -79,7 +91,9 @@ class Home extends StatelessWidget {
                     );
                   }).toList(),
                   onChanged: (value) {
-                    selectedCity = value!;
+                    setState(() {
+                      selectedCity = value;
+                    });
                   },
                   style: TextStyle(color: Colors.white),
                   icon: Icon(Icons.arrow_drop_down, color: Colors.white),
@@ -99,6 +113,17 @@ class Home extends StatelessWidget {
               padding: EdgeInsets.all(16.0),
               child: Row(
                 children: [
+                  IconButton(
+                    icon: Icon(Icons.settings, size: 30, color: Color(0xFF156651)),
+                    onPressed: () {
+                      // Naviguer vers la page des paramètres
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SettingsPage()),
+                      );
+                    },
+                  ),
+                  SizedBox(width: 10),
                   Expanded(
                     child: TextField(
                       decoration: InputDecoration(
@@ -110,8 +135,6 @@ class Home extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(width: 10),
-                  Icon(Icons.settings, size: 30, color: Color(0xFF156651)),
                 ],
               ),
             ),
@@ -142,22 +165,33 @@ class Home extends StatelessWidget {
             ),
             Container(
               height: 105,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  _buildCategoryContainer(Icons.kitchen, 'Ustensiles', isSelected: selectedCategory == 'Ustensiles', onTap: () {
-                    selectedCategory = 'Ustensiles';
-                  }),
-                  _buildCategoryContainer(Icons.ac_unit, 'viande/poissons', isSelected: selectedCategory == 'viande/poissons', onTap: () {
-                    selectedCategory = 'viande/poissons';
-                  }),
-                  _buildCategoryContainer(Icons.apple, 'Fruits', isSelected: selectedCategory == 'Fruits', onTap: () {
-                    selectedCategory = 'Fruits';
-                  }),
-                  _buildCategoryContainer(Icons.grass, 'Légumes', isSelected: selectedCategory == 'Légumes', onTap: () {
-                    selectedCategory = 'Légumes';
-                  }),
-                ],
+              child: Padding(
+                padding: EdgeInsets.only(left: 16.0), // Ajout du padding à gauche
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    _buildCategoryContainer(Icons.kitchen, 'Ustensiles', isSelected: selectedCategory == 'Ustensiles', onTap: () {
+                      setState(() {
+                        selectedCategory = 'Ustensiles';
+                      });
+                    }),
+                    _buildCategoryContainer(Icons.ac_unit, 'viande/poissons', isSelected: selectedCategory == 'viande/poissons', onTap: () {
+                      setState(() {
+                        selectedCategory = 'viande/poissons';
+                      });
+                    }),
+                    _buildCategoryContainer(Icons.apple, 'Fruits', isSelected: selectedCategory == 'Fruits', onTap: () {
+                      setState(() {
+                        selectedCategory = 'Fruits';
+                      });
+                    }),
+                    _buildCategoryContainer(Icons.grass, 'Légumes', isSelected: selectedCategory == 'Légumes', onTap: () {
+                      setState(() {
+                        selectedCategory = 'Légumes';
+                      });
+                    }),
+                  ],
+                ),
               ),
             ),
             Padding(
@@ -208,7 +242,7 @@ class Home extends StatelessWidget {
                             ),
                             ElevatedButton(
                               onPressed: () {
-                                addToCart(CartItem(
+                                widget.addToCart(CartItem(
                                   title: item['title']!,
                                   price: item['price']!,
                                 ));
