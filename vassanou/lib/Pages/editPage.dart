@@ -203,8 +203,67 @@ class EditpageState extends State<Editpage> {
      
       
     }
+    nom.clear();
+              description.clear();
+              prix.clear();
+              photo.clear();
+  }
+void showAlertProductAdd() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          actions: [
+            Image.asset(
+              "assets/images/login.png",
+              height: 200,
+              fit: BoxFit.cover,
+            ),
+            Text(
+              "Produit modifié avec succès",
+              style: TextStyle(color: Colors.teal.shade700),
+            )
+          ],
+        );
+      },
+    );
   }
 
+  void showAlertDialogConfirmEdit() {
+  
+  // Afficher une boîte de dialogue de confirmation
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("Confirmation"),
+        content: Text("Êtes-vous sûr de vouloir modifier ce produit ?"),
+        actions: [
+          
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); 
+            },
+            child: Text("Non"),
+          ),
+          TextButton(
+            onPressed: () async {
+              // Logique d'enregistrement du produit ici
+             
+                submitForm();
+                  Navigator.of(context).pop();
+                  showAlertProductAdd(); 
+              
+          
+
+            },
+            child: Text("Confirmer"),
+          ),
+        ],
+      );
+    },
+  );
+}
 
 
   @override
@@ -578,7 +637,7 @@ class EditpageState extends State<Editpage> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-                      submitForm();
+                      showAlertDialogConfirmEdit();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).primaryColor,

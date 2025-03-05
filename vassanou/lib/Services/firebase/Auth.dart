@@ -14,12 +14,12 @@ Future<void> createUserWithEmailAndPassword( {
   required String name,
   required String email, 
   required String password,
- /* String? pseudo,
+ String? pseudo,
   String? phoneNumber,
   String? categorieId,
   String? categorieLibelle,
   String? standId,
-  String? numeroStand,*/
+  String? numeroStand,
   String role = 'client'
 }) async {
   try {

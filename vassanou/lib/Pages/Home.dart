@@ -1,3 +1,4 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:vassanou/JsonModel/CategorieProduit.dart';
@@ -162,6 +163,62 @@ void loadProduits(String selectedCategorieId) {
     });
   }
   
+ void showAlertProductAdd() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          actions: [
+            Image.asset(
+              "assets/images/login.png",
+              height: 200,
+              fit: BoxFit.cover,
+            ),
+            Text(
+              "Produit supprimé avec succès",
+              style: TextStyle(color: Colors.teal.shade700),
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  void showAlertDialogConfirmDelete(String id) {
+  
+  // Afficher une boîte de dialogue de confirmation
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("Confirmation"),
+        content: Text("Êtes-vous sûr de vouloir supprimer ce produit ?"),
+        actions: [
+          
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); 
+            },
+            child: Text("Non"),
+          ),
+          TextButton(
+            onPressed: () async {
+              // Logique d'enregistrement du produit ici
+             
+                Firestoreservices().deleteProduit(id);
+                  Navigator.of(context).pop();
+                  showAlertProductAdd(); 
+              
+          
+
+            },
+            child: Text("Confirmer"),
+          ),
+        ],
+      );
+    },
+  );
+} 
 
   @override
   Widget build(BuildContext context) {
@@ -493,7 +550,7 @@ void loadProduits(String selectedCategorieId) {
                           Spacer(),
                               IconButton(
                                 onPressed: (){
-                                  Firestoreservices().deleteProduit(produits[index].id);
+                                  showAlertDialogConfirmDelete(produits[index].id);
                                 }, 
                                 icon: Icon(Icons.delete, color: Color(0xFFE9494F)),
                                 ),

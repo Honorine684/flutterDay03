@@ -1,4 +1,4 @@
-/*import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:vassanou/Authentification/Login.dart';
 import 'package:vassanou/Component/Bottombar.dart';
 import 'package:vassanou/JsonModel/CategorieCommerce.dart';
@@ -797,4 +797,4 @@ Widget _buildInfoRow(String label, String value) {
       ],
     ),
   );
-}*/
+}

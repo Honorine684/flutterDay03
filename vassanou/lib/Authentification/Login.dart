@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:vassanou/Authentification/Signup.dart';
 
-import 'package:vassanou/Authentification/Signup1.dart';
 
 
 import 'package:vassanou/Component/Bottombar.dart';
@@ -308,7 +308,7 @@ class LoginState extends State<Login> {
                       child: Text("S'inscrire",style: TextStyle(color: Colors.teal.shade700),),
                       onPressed: () => setState(() {
                         // naviguer vers la page d'inscription
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> const Signup1()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> const Signup()));
                       }),
                     )
                   ],
